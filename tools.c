@@ -40,7 +40,8 @@
 float My_drand48(int *initialise)
 {
 
-#ifdef _WIN32
+
+#if defined(_WIN32) || defined(__CYGWIN__) || defined(__MINGW32__)
 
     static int s1, s2;
     int k, Z;
