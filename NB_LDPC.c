@@ -112,12 +112,36 @@ int main(int argc, char * argv[])
     printf("\n\t Offset           : %g", offset);
     printf("\n\t NbOper           : %d\n",NbOper);
 
+
+
     printf("Load code  ... ");
     LoadCode (FileMatrix, &code);
     printf(" OK \n Load table ...");
     LoadTables (&table, code.GF, code.logGF);
     printf("OK \n Allocate decoder ... ");
     AllocateDecoder (&code, &decoder);
+
+
+
+int tmp_dec;
+int tmp_GF;
+
+    for (i=0; i<code.M; i++)
+    {
+        for (k=0; k<code.rowDegree[i]; k++)
+        {
+
+            tmp_dec = code.matValue[i][k];
+            tmp_GF = table.GFDEC[tmp_dec];
+            code.matValue[i][k] = tmp_GF;
+            //printf(" %d ",code.matValue[i][k] );
+        }
+        //printf("\n");
+    }
+//getchar();
+
+
+
     printf("OK \n Gaussian Elimination ... ");
     GaussianElimination (&code, &table);
     printf(" OK \n");
@@ -188,8 +212,6 @@ int main(int argc, char * argv[])
     sum_it=0;
 
 
-
-
     for (nb=1; nb<=NbMonteCarlo; nb++)
     {
         /* Decoder re-initialization */
@@ -200,8 +222,8 @@ int main(int argc, char * argv[])
         /* Encode the information bits KBIN to a (non binary) codeword NSYMB */
         Encoding (&code, &table, CodeWord, NBIN, KSYMB);
 
-        /* Noisy channel (AWGN)*/
 
+            /* Noisy channel (AWGN)*/
             ModelChannel_AWGN_BPSK (&code, &decoder, &table,  NBIN, EbN,&Idum);
            // ModelChannel_AWGN_BPSK_repeat (&code, &decoder, &table,  NBIN, EbN,&Idum);
         //ModelChannel_AWGN_64 (&code, &decoder, NBIN, EbN,&Idum);
@@ -277,8 +299,8 @@ int main(int argc, char * argv[])
                 {
                     for (k=0; k < code.GF; k++)
                     {
-                        decoder.APP[code.mat[node][i]][k] = decoder.M_CtoV_LLR[i][k] + Mvc_temp[i][k];
-                        decoder.VtoC[code.mat[node][i]][k]= decoder.M_CtoV_LLR[i][k] + decoder.intrinsic_LLR[code.mat[node][i]][k];// compute Mvc and save RAM
+                        decoder.APP[code.mat[node][i]][k] = decoder.M_CtoV_LLR[i][k]  + Mvc_temp[i][k];
+                        decoder.VtoC[code.mat[node][i]][k]= decoder.M_CtoV_LLR[i][k]  + decoder.intrinsic_LLR[code.mat[node][i]][k];// compute Mvc and save RAM
                     }
                 }
 
