@@ -291,25 +291,6 @@ for (i=0; i<88; i++)
 }
 
 
-// switch redundant with info
-for (i=0; i<44; i++)
-{
-    for (k=0;k<6; k++)
-    {
-        tmp_array[k] = NBIN[i][k];
-    }
-        for (k=0;k<6; k++)
-    {
-        NBIN[i][k] = NBIN[44+i][k];
-    }
-    for (k=0;k<6; k++)
-    {
-        NBIN[i+44][k] = tmp_array[k];
-    }
-
-}
-
-
 //for (i=0; i<88; i++)
 //{
 //    printf("%d: ",i);
