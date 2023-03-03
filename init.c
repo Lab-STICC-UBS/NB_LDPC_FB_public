@@ -23,6 +23,8 @@
 #define STR_MAXSIZE 350    //la taille maximale permise pour les chaines de caractères. Utilisée dans la fonction calloc().
 
 #define KN_matrix
+//#define UBS_matrix
+//#define BeiDou_matrix
 
 /*!
  * \fn Table_Add_GF
@@ -128,7 +130,18 @@ void Table_dec_GF(table_t *table, int GF, int logGF)
         table->GFDEC[sum]=j;
         //printf(" \n bin2dec of GF %d is %d \n",j,sum);
     }
-    //getchar();
+
+//    for (j=0; j<GF; j++)
+//    {
+//        printf("DECGF[%d]=%d \n",j,table->DECGF[j]);
+//    }
+//    getchar();
+//    for (j=0; j<GF; j++)
+//    {
+//        printf("GFDEC[%d]=%d \n",j,table->GFDEC[j]);
+//    }
+//    getchar();
+
 }
 
 
@@ -295,7 +308,7 @@ void LoadCode (char *FileMatrix, code_t *code)
     }
 
 
-#ifndef KN_matrix
+#ifdef UBS_matrix
 printf(" \n UBS alist format is used! \n");
 int temp_int;
     for (m=0; m<M; m++)
@@ -359,7 +372,7 @@ printf(" \n Normal alist format is used! \n");
 //
 //}
 //getchar();
-//
+////
 //printf(" \n ");
 //for (m=0; m<M; m++)
 //{
