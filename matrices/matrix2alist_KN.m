@@ -43,7 +43,7 @@ GF=64;
     for i=1:M
         for j=1:dc(i)
             fprintf(fileID,'%d ',mlist(k + j ));
-            fprintf(fileID,'%d ',H( i, mlist(k + j  )));
+            fprintf(fileID,'%d ',H( i, mlist(k + j  ))-1);
         end
         k=k+dc(i);
         fprintf(fileID,' \n ');
