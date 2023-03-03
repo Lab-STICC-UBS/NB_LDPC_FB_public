@@ -122,7 +122,14 @@ int main(int argc, char * argv[])
     AllocateDecoder (&code, &decoder);
 
 
+        // encoded example from Beidou B1C page 71,  B-CNAV1 Subframe 3 64-ary LDPC(88,44)
+        // standard with MSB on left
+  int temp_kbin[44][6]={{0,1,0,1,0,0},{0,1,0,0,1,1},{1,1,0,0,1,0},{1,0,0,0,0,1},{0,1,0,1,0,0},{0,1,1,0,0,1},{0,0,0,0,1,0},{1,0,0,1,0,1},{0,0,1,1,0,1},{1,1,1,1,0,1},{0,0,1,1,1,0},{1,0,1,0,0,0},{0,1,1,1,0,0},{0,1,0,1,1,1},{1,0,0,1,0,0},{0,0,1,0,1,1},{0,1,0,0,0,1},{1,1,1,1,1,1},{1,0,1,0,0,0},{0,0,1,1,1,0},{0,1,1,0,0,0},{1,0,1,1,1,1},{0,0,0,0,0,0},{1,0,0,0,1,1},{0,0,1,0,1,1},{1,1,1,0,1,1},{1,0,1,0,0,0},{1,0,0,1,1,0},{0,0,0,0,1,0},{1,1,0,0,1,1},{1,1,0,1,1,0},{0,1,0,1,1,1},{1,1,0,1,0,0},{0,0,0,0,1,0},{1,0,0,1,0,0},{0,0,0,1,0,0},{1,1,1,0,1,1},{1,0,1,0,0,1},{1,1,0,0,0,1},{1,0,0,1,0,0},{0,1,1,0,1,1},{1,1,1,0,0,1},{0,1,1,0,1,0},{0,0,0,0,0,1}};
+   //    int temp_kbin[44][6]={{0,0,1,0,1,0},{1,1,0,0,1,0},{0,1,0,0,1,1},{1,0,0,0,0,1},{0,0,1,0,1,0},{1,0,0,1,1,0},{0,1,0,0,0,0},{1,0,1,0,0,1},{1,0,1,1,0,0},{1,0,1,1,1,1},{0,1,1,1,0,0},{0,0,0,1,0,1},{0,0,1,1,1,0},{1,1,1,0,1,0},{0,0,1,0,0,1},{1,1,0,1,0,0},{1,0,0,0,1,0},{1,1,1,1,1,1},{0,0,0,1,0,1,},{0,1,1,1,0,0},{0,0,0,1,1,0},{1,1,1,1,0,1},{0,0,0,0,0,0},{1,1,0,0,0,1},{1,1,0,1,0,0},{1,1,0,1,1,1},{0,0,0,1,0,1},{0,1,1,0,0,1},{0,1,0,0,0,0},{1,1,0,0,1,1},{0,1,1,0,1,1},{1,1,1,0,1,0},{0,0,1,0,1,1},{0,1,0,0,0,0},{0,0,1,0,0,1},{0,0,1,0,0,0},{1,1,0,1,1,1},{1,0,0,1,0,1},{1,0,0,0,1,1},{0,0,1,0,0,1},{1,1,0,1,1,0},{1,0,0,1,1,1},{0,1,0,1,1,0},{1,0,0,0,0,0}};
 
+
+
+// to convert from KN GF format (power representation to BeiDou GF format (vector representation)
 int tmp_dec;
 int tmp_GF;
 
@@ -212,15 +219,107 @@ int tmp_GF;
     sum_it=0;
 
 
+ int tmp_array[6];
+
+
     for (nb=1; nb<=NbMonteCarlo; nb++)
     {
         /* Decoder re-initialization */
 
         /* Generate uniformly distributed information bits (KBIN)) */
-        RandomBinaryGenerator (code.N, code.M, code.GF, code.logGF, KBIN, KSYMB, table.BINGF,&Idum);
+    //    RandomBinaryGenerator (code.N, code.M, code.GF, code.logGF, KBIN, KSYMB, table.BINGF,&Idum);
+
+
+// test Beidou encoding
+//        for(int k=0;k<code.K;k++)
+//            {
+//            KSYMB[k]=Bin2GF(temp_kbin[k],code.GF,code.logGF,table.BINGF);
+//          // printf(" -> %d",KSYMB[kkk]);
+//      //   getchar();
+//        }
+
+
 
         /* Encode the information bits KBIN to a (non binary) codeword NSYMB */
-        Encoding (&code, &table, CodeWord, NBIN, KSYMB);
+//        Encoding (&code, &table, CodeWord, NBIN, KSYMB);
+
+
+//        for (n=0; n<code.N; n++){ printf("%d  ",code.Perm[n] ) ;      }
+//getchar();
+//
+//        printf("\n information part \n");
+//        for(int k=0;k<code.K;k++)
+//        {
+//            printf(" %d: ",k);
+//            {
+//                for(int g=code.logGF;g>0;g--)
+//                {
+//                printf("%d", NBIN[code.M+k][g-1]);
+//                }
+//            }
+//
+//         getchar();
+//        }
+//
+//        printf("\n redundant part \n");
+//        for(int n=0;n<code.M;n++)
+//        {
+//            printf(" %d: ",n+code.K);
+//            {
+//                for(int g=0;g<code.logGF;g++)
+//                {
+//                printf("%d", NBIN[n][g]);
+//                }
+//            }
+//
+//         getchar();
+//        }
+    BDS_ICD_Example(NBIN);
+
+
+            // little indean to big indean
+for (i=0; i<88; i++)
+{
+    for (k=0;k<6; k++)
+    {
+        tmp_array[k] = NBIN[i][k];
+    }
+    for (k=0;k<6; k++)
+    {
+        NBIN[i][5-k] = tmp_array[k] ;
+    }
+}
+
+
+// switch redundant with info
+for (i=0; i<44; i++)
+{
+    for (k=0;k<6; k++)
+    {
+        tmp_array[k] = NBIN[i][k];
+    }
+        for (k=0;k<6; k++)
+    {
+        NBIN[i][k] = NBIN[44+i][k];
+    }
+    for (k=0;k<6; k++)
+    {
+        NBIN[i+44][k] = tmp_array[k];
+    }
+
+}
+
+
+//for (i=0; i<88; i++)
+//{
+//    printf("%d: ",i);
+//    for (k=0;k<6; k++)
+//    {
+//        printf("%d",NBIN[i][5-k]);
+//    }
+//    getchar();
+//}
+
 
 
             /* Noisy channel (AWGN)*/
