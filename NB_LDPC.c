@@ -50,11 +50,11 @@
  compile using make
  then Run the executable with the following parameters
 
-./essai 2000 10 ./matrices/KN/N576_K480_GF64.txt 3.5 10 20 0.3 25
+./essai 2000 10 ./matrices/KN/N528_K264_GF64_BeiDou.txt  2.0  20 20 0.3 25
 
 giving
 
-<0> FER = 40/751 = 0.053262 BER = 520 / x = 0.001443 avr_it = 2.58
+<0> FER= 40 / 9397 = 0.004257 BER= 875 / x = 0.000353  avr_it=3.25
 
 */
 int main(int argc, char * argv[])
@@ -122,14 +122,12 @@ int main(int argc, char * argv[])
     AllocateDecoder (&code, &decoder);
 
 
-        // encoded example from Beidou B1C page 71,  B-CNAV1 Subframe 3 64-ary LDPC(88,44)
+        // non encoded example from Beidou B1C page 71,  B-CNAV1 Subframe 3 64-ary LDPC(88,44)
         // standard with MSB on left
-  int temp_kbin[44][6]={{0,1,0,1,0,0},{0,1,0,0,1,1},{1,1,0,0,1,0},{1,0,0,0,0,1},{0,1,0,1,0,0},{0,1,1,0,0,1},{0,0,0,0,1,0},{1,0,0,1,0,1},{0,0,1,1,0,1},{1,1,1,1,0,1},{0,0,1,1,1,0},{1,0,1,0,0,0},{0,1,1,1,0,0},{0,1,0,1,1,1},{1,0,0,1,0,0},{0,0,1,0,1,1},{0,1,0,0,0,1},{1,1,1,1,1,1},{1,0,1,0,0,0},{0,0,1,1,1,0},{0,1,1,0,0,0},{1,0,1,1,1,1},{0,0,0,0,0,0},{1,0,0,0,1,1},{0,0,1,0,1,1},{1,1,1,0,1,1},{1,0,1,0,0,0},{1,0,0,1,1,0},{0,0,0,0,1,0},{1,1,0,0,1,1},{1,1,0,1,1,0},{0,1,0,1,1,1},{1,1,0,1,0,0},{0,0,0,0,1,0},{1,0,0,1,0,0},{0,0,0,1,0,0},{1,1,1,0,1,1},{1,0,1,0,0,1},{1,1,0,0,0,1},{1,0,0,1,0,0},{0,1,1,0,1,1},{1,1,1,0,0,1},{0,1,1,0,1,0},{0,0,0,0,0,1}};
-   //    int temp_kbin[44][6]={{0,0,1,0,1,0},{1,1,0,0,1,0},{0,1,0,0,1,1},{1,0,0,0,0,1},{0,0,1,0,1,0},{1,0,0,1,1,0},{0,1,0,0,0,0},{1,0,1,0,0,1},{1,0,1,1,0,0},{1,0,1,1,1,1},{0,1,1,1,0,0},{0,0,0,1,0,1},{0,0,1,1,1,0},{1,1,1,0,1,0},{0,0,1,0,0,1},{1,1,0,1,0,0},{1,0,0,0,1,0},{1,1,1,1,1,1},{0,0,0,1,0,1,},{0,1,1,1,0,0},{0,0,0,1,1,0},{1,1,1,1,0,1},{0,0,0,0,0,0},{1,1,0,0,0,1},{1,1,0,1,0,0},{1,1,0,1,1,1},{0,0,0,1,0,1},{0,1,1,0,0,1},{0,1,0,0,0,0},{1,1,0,0,1,1},{0,1,1,0,1,1},{1,1,1,0,1,0},{0,0,1,0,1,1},{0,1,0,0,0,0},{0,0,1,0,0,1},{0,0,1,0,0,0},{1,1,0,1,1,1},{1,0,0,1,0,1},{1,0,0,0,1,1},{0,0,1,0,0,1},{1,1,0,1,1,0},{1,0,0,1,1,1},{0,1,0,1,1,0},{1,0,0,0,0,0}};
+  //int temp_kbin[44][6]={{0,1,0,1,0,0},{0,1,0,0,1,1},{1,1,0,0,1,0},{1,0,0,0,0,1},{0,1,0,1,0,0},{0,1,1,0,0,1},{0,0,0,0,1,0},{1,0,0,1,0,1},{0,0,1,1,0,1},{1,1,1,1,0,1},{0,0,1,1,1,0},{1,0,1,0,0,0},{0,1,1,1,0,0},{0,1,0,1,1,1},{1,0,0,1,0,0},{0,0,1,0,1,1},{0,1,0,0,0,1},{1,1,1,1,1,1},{1,0,1,0,0,0},{0,0,1,1,1,0},{0,1,1,0,0,0},{1,0,1,1,1,1},{0,0,0,0,0,0},{1,0,0,0,1,1},{0,0,1,0,1,1},{1,1,1,0,1,1},{1,0,1,0,0,0},{1,0,0,1,1,0},{0,0,0,0,1,0},{1,1,0,0,1,1},{1,1,0,1,1,0},{0,1,0,1,1,1},{1,1,0,1,0,0},{0,0,0,0,1,0},{1,0,0,1,0,0},{0,0,0,1,0,0},{1,1,1,0,1,1},{1,0,1,0,0,1},{1,1,0,0,0,1},{1,0,0,1,0,0},{0,1,1,0,1,1},{1,1,1,0,0,1},{0,1,1,0,1,0},{0,0,0,0,0,1}};
 
 
-
-// to convert from KN GF format (power representation to BeiDou GF format (vector representation)
+// convert the matrix from  BeiDou GF format (The matrix elements are given as the vector representation) to the KN GF format (The matrix elements are given as the power of the primitive element)
 int tmp_dec;
 int tmp_GF;
 
@@ -145,8 +143,6 @@ int tmp_GF;
         }
         //printf("\n");
     }
-//getchar();
-
 
 
     printf("OK \n Gaussian Elimination ... ");
@@ -227,26 +223,25 @@ int tmp_GF;
         /* Decoder re-initialization */
 
         /* Generate uniformly distributed information bits (KBIN)) */
-    //    RandomBinaryGenerator (code.N, code.M, code.GF, code.logGF, KBIN, KSYMB, table.BINGF,&Idum);
+        RandomBinaryGenerator (code.N, code.M, code.GF, code.logGF, KBIN, KSYMB, table.BINGF,&Idum);
 
 
-// test Beidou encoding
-//        for(int k=0;k<code.K;k++)
-//            {
-//            KSYMB[k]=Bin2GF(temp_kbin[k],code.GF,code.logGF,table.BINGF);
-//          // printf(" -> %d",KSYMB[kkk]);
-//      //   getchar();
-//        }
 
+        for(int k=0;k<code.K;k++)
+            {
+            //KSYMB[k]=Bin2GF(temp_kbin[k],code.GF,code.logGF,table.BINGF);//test Beidou encoding
+            KSYMB[k]=Bin2GF(KBIN[k],code.GF,code.logGF,table.BINGF);
+          // printf(" -> %d",KSYMB[k]);
+         //getchar();
+        }
+//getchar();
 
 
         /* Encode the information bits KBIN to a (non binary) codeword NSYMB */
-//        Encoding (&code, &table, CodeWord, NBIN, KSYMB);
+        Encoding (&code, &table, CodeWord, NBIN, KSYMB);
 
 
-//        for (n=0; n<code.N; n++){ printf("%d  ",code.Perm[n] ) ;      }
-//getchar();
-//
+
 //        printf("\n information part \n");
 //        for(int k=0;k<code.K;k++)
 //        {
@@ -260,7 +255,7 @@ int tmp_GF;
 //
 //         getchar();
 //        }
-//
+
 //        printf("\n redundant part \n");
 //        for(int n=0;n<code.M;n++)
 //        {
@@ -274,21 +269,21 @@ int tmp_GF;
 //
 //         getchar();
 //        }
-    BDS_ICD_Example(NBIN);
 
-
-            // little indean to big indean
-for (i=0; i<88; i++)
-{
-    for (k=0;k<6; k++)
-    {
-        tmp_array[k] = NBIN[i][k];
-    }
-    for (k=0;k<6; k++)
-    {
-        NBIN[i][5-k] = tmp_array[k] ;
-    }
-}
+// // testing encoded codeword given by BeiDou B1C standard
+// BDS_ICD_Example(NBIN);
+//            // little indean to big indean required
+//for (i=0; i<88; i++)
+//{
+//    for (k=0;k<6; k++)
+//    {
+//        tmp_array[k] = NBIN[i][k];
+//    }
+//    for (k=0;k<6; k++)
+//    {
+//        NBIN[i][5-k] = tmp_array[k] ;
+//    }
+//}
 
 
 //for (i=0; i<88; i++)
