@@ -126,6 +126,7 @@ int main(int argc, char * argv[])
 int tmp_dec;
 int tmp_GF;
 
+   /* //only for Beidou 's matrices
     for (i=0; i<code.M; i++)
     {
         for (k=0; k<code.rowDegree[i]; k++)
@@ -138,7 +139,7 @@ int tmp_GF;
         }
         //printf("\n");
     }
-//getchar();
+//getchar();*/
 
 
 
