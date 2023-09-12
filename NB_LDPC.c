@@ -68,6 +68,7 @@ int main(int argc, char * argv[])
     float 	offset;
     char *FileName,*FileMatrix,*name;
     int synd=0, nbErrors, nbErroneousFrames = 0, nbUndetectedErrors = 0;
+    int bit_error;
     int total_errors =0;
 
     code_t code;
@@ -183,7 +184,8 @@ int tmp_GF;
 
     decide=(int *)calloc(code.N,sizeof(int));
 
-
+int *Error_symbol;
+Error_symbol=(int *)calloc(code.K,sizeof(int));
 
     // check that dc is constant
     int dc_min=100;
@@ -270,7 +272,7 @@ int tmp_GF;
 //         getchar();
 //        }
 
-// // testing encoded codeword given by BeiDou B1C standard
+// // check encoded codeword given by BeiDou B1C standard
 // BDS_ICD_Example(NBIN);
 //            // little indean to big indean required
 //for (i=0; i<88; i++)
@@ -399,9 +401,15 @@ int tmp_GF;
         nbErrors = 0;
         for (k=0; k<code.K; k++)
         {
+            bit_error = 0;
             for (l=0; l<code.logGF; l++)
                 if (table.BINGF[decide[k]][l] != NBIN[k][l])
+                {
                     nbErrors ++ ;
+                    bit_error = 1;
+                }
+            if (bit_error == 1)
+                Error_symbol[k] = Error_symbol[k] + 1;
         }
 
 
@@ -452,6 +460,11 @@ int tmp_GF;
     fclose(opfile);
     printf(" \n results printed \n ");
 
+printf("/n error per symbol");
+for (k=0; k<code.K; k++)
+{
+    printf(" %d ",Error_symbol[k] );
+}
 
     printf("\n");
     printf("Simulation complete at time: %s", c_time_string);
