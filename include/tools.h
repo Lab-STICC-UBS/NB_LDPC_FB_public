@@ -29,4 +29,6 @@ int Syndrom (code_t *code, int *decide, table_t *tableGF);
 
 void Decision( int *decision,float **APP,int N,int GF);
 
+void BDS_ICD_Example(int **NBIN) ;
+
 #endif
