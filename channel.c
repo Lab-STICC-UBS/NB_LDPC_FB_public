@@ -48,7 +48,9 @@ void ModelChannel_AWGN_BPSK (code_t *code, decoder_t *decoder, table_t *table, i
     /* Binary-input AWGN channel : */
 
     sigma = sqrt(1.0/(2*code->rate*pow(10,EbN/10.0)));  // considering EbNo
-    //sigma = sqrt(1.0/(2*pow(10,EbN/10.0))); // considering SNR
+    //sigma = sqrt(1.0/(pow(10,EbN/10.0))); // for EsNo considering Bi-AWGN
+    //sigma = sqrt(1.0/(2*pow(10,EbN/10.0))); // for EsNo considering nose on I and Q
+
     for (n=0; n<N; n++)
     {
         for (q=0; q<logGF; q++)
