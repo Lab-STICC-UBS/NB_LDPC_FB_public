@@ -123,12 +123,55 @@ int main(int argc, char * argv[])
     AllocateDecoder (&code, &decoder);
 
 
-        // non encoded example from Beidou B1C page 71,  B-CNAV1 Subframe 3 64-ary LDPC(88,44)
-        // standard with MSB on left
-  //int temp_kbin[44][6]={{0,1,0,1,0,0},{0,1,0,0,1,1},{1,1,0,0,1,0},{1,0,0,0,0,1},{0,1,0,1,0,0},{0,1,1,0,0,1},{0,0,0,0,1,0},{1,0,0,1,0,1},{0,0,1,1,0,1},{1,1,1,1,0,1},{0,0,1,1,1,0},{1,0,1,0,0,0},{0,1,1,1,0,0},{0,1,0,1,1,1},{1,0,0,1,0,0},{0,0,1,0,1,1},{0,1,0,0,0,1},{1,1,1,1,1,1},{1,0,1,0,0,0},{0,0,1,1,1,0},{0,1,1,0,0,0},{1,0,1,1,1,1},{0,0,0,0,0,0},{1,0,0,0,1,1},{0,0,1,0,1,1},{1,1,1,0,1,1},{1,0,1,0,0,0},{1,0,0,1,1,0},{0,0,0,0,1,0},{1,1,0,0,1,1},{1,1,0,1,1,0},{0,1,0,1,1,1},{1,1,0,1,0,0},{0,0,0,0,1,0},{1,0,0,1,0,0},{0,0,0,1,0,0},{1,1,1,0,1,1},{1,0,1,0,0,1},{1,1,0,0,0,1},{1,0,0,1,0,0},{0,1,1,0,1,1},{1,1,1,0,0,1},{0,1,1,0,1,0},{0,0,0,0,0,1}};
+
+/* 
+ // check encoded codeword given by BeiDou B1C standard
+// non encoded example from [1] page 71,  B-CNAV1 Subframe 3 64-ary LDPC(88,44)
+// [1] "Beidou Navigation Satellite Sytem In Space Interface Document Open Service Signal B1C(Version 1.0) " 2017 B1C 
+// standard with MSB on left
+// use matrix from [1], page 25 .file at  ./matrices/KN/N528_K264_GF64_BeiDou.txt
+
+    int ** temp_NBIN=(int **)calloc(code.N,sizeof(int *));
+    for (n=0; n<code.N; n++)  	temp_NBIN[n]=(int *)calloc(code.logGF,sizeof(int));
+ BDS_ICD_Example(temp_NBIN);
+
+  int temp_kbin[44][6]={{0,1,0,1,0,0},{0,1,0,0,1,1},{1,1,0,0,1,0},{1,0,0,0,0,1},{0,1,0,1,0,0},{0,1,1,0,0,1},{0,0,0,0,1,0},{1,0,0,1,0,1},{0,0,1,1,0,1},{1,1,1,1,0,1},{0,0,1,1,1,0},{1,0,1,0,0,0},{0,1,1,1,0,0},{0,1,0,1,1,1},{1,0,0,1,0,0},{0,0,1,0,1,1},{0,1,0,0,0,1},{1,1,1,1,1,1},{1,0,1,0,0,0},{0,0,1,1,1,0},{0,1,1,0,0,0},{1,0,1,1,1,1},{0,0,0,0,0,0},{1,0,0,0,1,1},{0,0,1,0,1,1},{1,1,1,0,1,1},{1,0,1,0,0,0},{1,0,0,1,1,0},{0,0,0,0,1,0},{1,1,0,0,1,1},{1,1,0,1,1,0},{0,1,0,1,1,1},{1,1,0,1,0,0},{0,0,0,0,1,0},{1,0,0,1,0,0},{0,0,0,1,0,0},{1,1,1,0,1,1},{1,0,1,0,0,1},{1,1,0,0,0,1},{1,0,0,1,0,0},{0,1,1,0,1,1},{1,1,1,0,0,1},{0,1,1,0,1,0},{0,0,0,0,0,1}};
+        
 
 
-// convert the matrix from  BeiDou GF format (The matrix elements are given as the vector representation) to the KN GF format (The matrix elements are given as the power of the primitive element)
+        int tmp_array[6];
+        // little indean to big indean required
+        for (i=0; i<code.K; i++)
+        {
+            for (k=0;k<6; k++)
+            {
+                //tmp_array[k] = temp_NBIN[i + code.M][k];
+                tmp_array[k] = temp_NBIN[i][k];
+            }
+            for (k=0;k<6; k++)
+            {
+                temp_kbin[i][5-k] = tmp_array[k] ;
+            }
+        }
+        */
+/*
+        printf("\n info part \n");
+       for(int n=0;n<code.K;n++)
+       {
+           printf(" %d: ",n);
+           {
+               for(int g=0;g<code.logGF;g++)
+               {
+               printf("%d", temp_kbin[n][g]);
+               }
+           }
+
+        getchar();
+       } 
+*/
+
+
+ // convert the matrix from  BeiDou GF format (The matrix elements are given as the vector representation) to the KN GF format (The matrix elements are given as the power of the primitive element)
 int tmp_dec;
 int tmp_GF;
 
@@ -148,7 +191,7 @@ int tmp_GF;
 
     printf("OK \n Gaussian Elimination ... ");
     GaussianElimination (&code, &table);
-    printf(" OK \n");
+        printf(" OK \n");
 
 
 // output results in a file
@@ -217,9 +260,6 @@ Error_symbol=(int *)calloc(code.K,sizeof(int));
     sum_it=0;
 
 
- int tmp_array[6];
-
-
     for (nb=1; nb<=NbMonteCarlo; nb++)
     {
         /* Decoder re-initialization */
@@ -243,60 +283,35 @@ Error_symbol=(int *)calloc(code.K,sizeof(int));
         Encoding (&code, &table, CodeWord, NBIN, KSYMB);
 
 
+/*
+        printf("\n information part \n");
+       for(int k=0;k<code.K;k++)
+       {
+           printf(" %d: ",k);
+           {
+               for(int g=code.logGF;g>0;g--)
+               {
+               printf("%d", NBIN[k][g-1]);
+               }
+           }
 
-//        printf("\n information part \n");
-//        for(int k=0;k<code.K;k++)
-//        {
-//            printf(" %d: ",k);
-//            {
-//                for(int g=code.logGF;g>0;g--)
-//                {
-//                printf("%d", NBIN[code.M+k][g-1]);
-//                }
-//            }
-//
-//         getchar();
-//        }
+        getchar();
+       }
 
-//        printf("\n redundant part \n");
-//        for(int n=0;n<code.M;n++)
-//        {
-//            printf(" %d: ",n+code.K);
-//            {
-//                for(int g=0;g<code.logGF;g++)
-//                {
-//                printf("%d", NBIN[n][g]);
-//                }
-//            }
-//
-//         getchar();
-//        }
+       printf("\n redundant part \n");
+       for(int n=code.K;n<code.N;n++)
+       {
+           printf(" %d: ",n);
+           {
+               for(int g=code.logGF;g>0;g--)
+               {
+               printf("%d", NBIN[n][g-1]);
+               }
+           }
 
-// // check encoded codeword given by BeiDou B1C standard
-// BDS_ICD_Example(NBIN);
-//            // little indean to big indean required
-//for (i=0; i<88; i++)
-//{
-//    for (k=0;k<6; k++)
-//    {
-//        tmp_array[k] = NBIN[i][k];
-//    }
-//    for (k=0;k<6; k++)
-//    {
-//        NBIN[i][5-k] = tmp_array[k] ;
-//    }
-//}
-
-
-//for (i=0; i<88; i++)
-//{
-//    printf("%d: ",i);
-//    for (k=0;k<6; k++)
-//    {
-//        printf("%d",NBIN[i][5-k]);
-//    }
-//    getchar();
-//}
+        getchar();
+       } 
+*/
 
 
 
@@ -460,7 +475,7 @@ Error_symbol=(int *)calloc(code.K,sizeof(int));
     fclose(opfile);
     printf(" \n results printed \n ");
 
-printf("/n error per symbol");
+printf("\n error per symbol");
 for (k=0; k<code.K; k++)
 {
     printf(" %d ",Error_symbol[k] );
