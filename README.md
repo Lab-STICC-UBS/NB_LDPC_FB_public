@@ -30,7 +30,11 @@ you may use CodeBlocks IDE
 
 in the Projet-> Set Programs' arguments
 
-> 2000 10 ./matrices/KN/N576_K480_GF64.txt 3.5 20 20 0.3 25
+> 2000 10 ./matrices/KN/N528_K264_GF64_BeiDou.txt  2.0  20 20 0.3 25
+
+giving
+
+<0> FER= 40 / 9397 = 0.004257 BER= 875 / x = 0.000353  avr_it=3.25
 
 ## Simulation on Linux
 
@@ -40,7 +44,7 @@ compile the c code using the makefile
 
 then run with appropriate parameters
 
-> ./essai 2000 10 ./matrices/KN/N576_K480_GF64.txt 3.5 20 20 0.3 25
+> ./essai 2000 10 ./matrices/KN/N528_K264_GF64_BeiDou.txt  2.0  20 20 0.3 25
 
 you may use the start.sh shell script to run simulation for multiple snr
 
@@ -48,35 +52,5 @@ you may use the start.sh shell script to run simulation for multiple snr
 
 ## Simulation results
 
-> Monte-Carlo simulation of Non-Binary LDPC decoder
-> > 
-> Simulation parameters:
-> 
->          NbMonteCarlo     : 2000
->          NbIterMax        : 10
->          FileMatrix       : ./matrices/KN/N576_K480_GF64.txt
->          Eb/No (dB)       : 3.5
->          n_vc             : 20
->		   n_cv				: 20
->          Offset           : 0.3
->          NbOper           : 25
-> 
->  Normal alist format is used!
-> LDPC code parameters:
->          N      :96
->          K      :80
->          M      :16
->          CR     :0.833333
->          GF     :64
->          logGF  :6
-> 
->          Note             : FB30
-> Simulation started at time: Wed Jan 08 17:34:02 2020
-> 
-> <0> FER= 40 / 751 = 0.053262 BER= 520 / x = 0.001443  avr_it=2.58
->  results are printed in file ./data/results_N96_CR0.83_GF64_IT10_Offset0.3_nm20_FB30.txt
-> 
->  results printed
-> 
-> Simulation complete at time: Wed Jan 08 17:34:08 2020
+> <0> FER= 40 / 9397 = 0.004257 BER= 875 / x = 0.000353  avr_it=3.25
 
